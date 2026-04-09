@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Meeting Influence Score | Conversly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --void:#000;--deep:#030304;--base:#070709;--surface:#0c0c10;
+            --glass-1:rgba(255,255,255,0.018);--glass-2:rgba(255,255,255,0.035);--glass-3:rgba(255,255,255,0.055);--glass-4:rgba(255,255,255,0.075);--glass-5:rgba(255,255,255,0.1);
+            --border-1:rgba(255,255,255,0.045);--border-2:rgba(255,255,255,0.08);--border-3:rgba(255,255,255,0.12);--border-4:rgba(255,255,255,0.18);
+            --shine-1:rgba(255,255,255,0.06);--shine-2:rgba(255,255,255,0.1);--shine-3:rgba(255,255,255,0.15);
+            --emerald-600:#059669;--emerald-500:#10b981;--emerald-400:#34d399;--emerald-300:#6ee7b7;
+            --violet-600:#7c3aed;--violet-500:#8b5cf6;--violet-400:#a78bfa;--violet-300:#c4b5fd;
+            --cyan-600:#0891b2;--cyan-500:#06b6d4;--cyan-400:#22d3ee;--cyan-300:#67e8f9;
+            --rose-500:#f43f5e;--rose-400:#fb7185;
+            --amber-500:#f59e0b;--amber-400:#fbbf24;
+            --text-100:rgba(255,255,255,0.97);--text-85:rgba(255,255,255,0.85);--text-70:rgba(255,255,255,0.7);--text-50:rgba(255,255,255,0.5);--text-35:rgba(255,255,255,0.35);--text-20:rgba(255,255,255,0.2);
+            --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+            --ease:cubic-bezier(0.25,0.46,0.45,0.94);--ease-out:cubic-bezier(0.16,1,0.3,1);--ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+            --blur-sm:12px;--blur-md:24px;--blur-lg:40px;--blur-xl:60px;
+        }
+        html{height:100%;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+        body{font-family:var(--font);background:var(--void);color:var(--text-100);min-height:100dvh;line-height:1.5;overflow-x:hidden}
+
+        .ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+        .ambient-mesh{position:absolute;inset:-50%;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(139,92,246,0.14),transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(6,182,212,0.10),transparent 50%),radial-gradient(ellipse 50% 50% at 20% 80%,rgba(139,92,246,0.08),transparent 50%);animation:meshFloat 30s ease-in-out infinite}
+        @keyframes meshFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-2%,2%) scale(1.02)}}
+        .ambient-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.4;mix-blend-mode:screen}
+        .orb-1{width:500px;height:500px;background:radial-gradient(circle,rgba(139,92,246,0.28) 0%,transparent 70%);top:-15%;right:-10%;animation:orb1 20s ease-in-out infinite}
+        .orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(6,182,212,0.20) 0%,transparent 70%);bottom:-10%;left:-8%;animation:orb2 25s ease-in-out infinite}
+        .orb-3{width:300px;height:300px;background:radial-gradient(circle,rgba(164,131,255,0.14) 0%,transparent 70%);top:40%;left:60%;animation:orb3 22s ease-in-out infinite}
+        @keyframes orb1{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,30px)}}
+        @keyframes orb2{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-25px)}}
+        @keyframes orb3{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,35px)}}
+        .ambient-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:0.018}
+        .ambient-vignette{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,transparent 0%,rgba(0,0,0,0.4) 100%)}
+
+        .glass{background:linear-gradient(135deg,var(--glass-2) 0%,var(--glass-1) 100%);border:1px solid var(--border-2);border-radius:20px;backdrop-filter:blur(var(--blur-lg)) saturate(180%);-webkit-backdrop-filter:blur(var(--blur-lg)) saturate(180%);box-shadow:0 1px 1px 0 var(--shine-2) inset,0 -1px 1px 0 rgba(0,0,0,0.1) inset,0 0 0 1px var(--glass-1) inset,0 20px 40px -15px rgba(0,0,0,0.5),0 0 1px 0 rgba(255,255,255,0.05);position:relative}
+        .glass::before{content:'';position:absolute;top:0;left:16px;right:16px;height:1px;background:linear-gradient(90deg,transparent 0%,var(--shine-2) 20%,var(--shine-3) 50%,var(--shine-2) 80%,transparent 100%);pointer-events:none}
+        .glass-card{background:linear-gradient(145deg,var(--glass-3) 0%,var(--glass-1) 50%,var(--glass-2) 100%);border:1px solid var(--border-2);border-radius:24px;backdrop-filter:blur(var(--blur-xl)) saturate(200%);-webkit-backdrop-filter:blur(var(--blur-xl)) saturate(200%);box-shadow:0 1px 1px 0 var(--shine-2) inset,0 0 0 1px var(--glass-1) inset,0 25px 50px -12px rgba(0,0,0,0.6),0 0 80px -20px rgba(139,92,246,0.1);position:relative;overflow:hidden}
+        .glass-card::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--shine-3),transparent);pointer-events:none}
+        .glass-pill{background:linear-gradient(135deg,var(--glass-3) 0%,var(--glass-2) 100%);border:1px solid var(--border-2);border-radius:100px;backdrop-filter:blur(var(--blur-md));-webkit-backdrop-filter:blur(var(--blur-md));box-shadow:0 1px 0 0 var(--shine-1) inset,0 4px 12px -4px rgba(0,0,0,0.3)}
+
+        .app{position:relative;z-index:1;max-width:460px;margin:0 auto;padding:16px;min-height:100dvh;display:flex;flex-direction:column}
+        .topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;margin-bottom:18px}
+        .topbar-brand{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-35)}
+        .topbar-brand b{background:linear-gradient(135deg,var(--violet-400),var(--cyan-400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700}
+        .topbar-score{display:none;align-items:baseline;gap:5px;padding:8px 14px;background:var(--glass-2);border:1px solid var(--border-1);border-radius:10px}
+        .topbar-num{font-size:16px;font-weight:700;background:linear-gradient(135deg,var(--violet-400),var(--cyan-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .topbar-label{font-size:10px;font-weight:500;color:var(--text-35);letter-spacing:0.05em}
+
+        .screen{display:none;flex-direction:column;flex:1}
+        .screen.active{display:flex;animation:screenIn 0.6s var(--ease-out)}
+        @keyframes screenIn{from{opacity:0;transform:translateY(20px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+        .intro{flex:1;display:flex;flex-direction:column;justify-content:center;padding:10px 0 30px}
+        .intro-badge{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;margin-bottom:28px;width:fit-content}
+        .intro-badge svg{width:14px;height:14px;color:var(--violet-400)}
+        .intro-badge span{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;background:linear-gradient(135deg,var(--violet-300),var(--cyan-400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .intro-title{font-size:clamp(34px,8.5vw,44px);font-weight:700;line-height:1.08;letter-spacing:-0.04em;margin-bottom:22px}
+        .intro-title .line{display:block;text-shadow:0 0 80px rgba(255,255,255,0.08)}
+        .intro-title .gradient{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:500;background:linear-gradient(135deg,var(--violet-400) 0%,var(--cyan-400) 50%,var(--violet-300) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:shimmer 8s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(139,92,246,0.3))}
+        @keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+        .intro-desc{font-size:15px;color:var(--text-50);line-height:1.65;margin-bottom:32px;max-width:360px}
+        
+        .stat-card{display:flex;align-items:center;gap:16px;padding:18px 20px;margin-bottom:32px}
+        .stat-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05));border:1px solid rgba(139,92,246,0.2);border-radius:14px;flex-shrink:0}
+        .stat-icon svg{width:22px;height:22px;color:var(--violet-400)}
+        .stat-text{font-size:13px;color:var(--text-50);line-height:1.55}
+        .stat-text strong{color:var(--violet-400);font-weight:600}
+        
+        .dims-section{margin-bottom:36px}
+        .dims-label{font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-20);margin-bottom:14px}
+        .dims-grid{display:flex;flex-wrap:wrap;gap:8px}
+        .dim-chip{padding:10px 15px;font-size:11px;font-weight:500;color:var(--text-50);background:var(--glass-1);border:1px solid var(--border-1);border-radius:10px}
+
+        .btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:17px 30px;border:none;border-radius:16px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.4s var(--ease);position:relative;overflow:hidden}
+        .btn::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.1) 0%,transparent 50%);pointer-events:none}
+        .btn-primary{background:linear-gradient(135deg,var(--violet-500) 0%,var(--violet-600) 100%);color:white;box-shadow:0 1px 0 0 rgba(255,255,255,0.15) inset,0 -1px 0 0 rgba(0,0,0,0.1) inset,0 10px 30px -8px rgba(139,92,246,0.5),0 0 0 1px rgba(139,92,246,0.2)}
+        .btn-primary:hover{transform:translateY(-3px);box-shadow:0 1px 0 0 rgba(255,255,255,0.2) inset,0 16px 40px -8px rgba(139,92,246,0.6)}
+        .btn-full{width:100%}
+        .btn svg{width:18px;height:18px}
+
+        /* Game Screen */
+        .game-header{margin-bottom:20px}
+        .progress-wrap{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+        .progress-text{font-size:11px;font-weight:600;color:var(--text-35);letter-spacing:0.05em}
+        .progress-bar{flex:1;height:5px;background:var(--glass-3);border-radius:3px;overflow:hidden}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--violet-500),var(--cyan-400));border-radius:3px;transition:width 0.5s var(--ease-out)}
+        .cat-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(6,182,212,0.08));border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:var(--violet-300)}
+        .cat-pill svg{width:12px;height:12px}
+        
+        .scenario-card{padding:28px 24px;margin-bottom:20px}
+        .scenario-text{font-size:16px;line-height:1.6;color:var(--text-85)}
+        .scenario-text b{color:var(--text-100);font-weight:600}
+        
+        .answers-wrap{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+        .answer{display:flex;align-items:flex-start;gap:14px;padding:18px 16px;background:var(--glass-2);border:1.5px solid var(--border-2);border-radius:16px;cursor:pointer;transition:all 0.3s var(--ease);text-align:left;font-family:var(--font)}
+        .answer:hover:not(.locked){background:var(--glass-3);border-color:var(--border-3);transform:translateY(-2px)}
+        .answer.selected{border-color:var(--violet-400);background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(6,182,212,0.06))}
+        .answer.locked{opacity:0.5;cursor:default}
+        .answer.locked.selected{opacity:1}
+        .answer-letter{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--glass-3);border:1px solid var(--border-2);border-radius:8px;font-size:11px;font-weight:700;color:var(--text-35);flex-shrink:0}
+        .answer.selected .answer-letter{background:linear-gradient(135deg,var(--violet-500),var(--cyan-500));border-color:transparent;color:white}
+        .answer-content{flex:1;display:flex;flex-direction:column;gap:6px}
+        .answer-text{font-size:13px;color:var(--text-70);line-height:1.5}
+        .answer-score{font-size:11px;font-weight:600;color:var(--text-35);opacity:0;transition:opacity 0.3s}
+        .answer.reveal .answer-score{opacity:1}
+        .answer-score.high{color:var(--emerald-400)}
+        .answer-score.mid{color:var(--amber-400)}
+        .answer-score.low{color:var(--rose-400)}
+
+        .running-score{text-align:center;padding:12px;font-size:12px;color:var(--text-35);font-weight:500}
+
+        /* Results */
+        .results{padding:20px 0}
+        .results-head{text-align:center;margin-bottom:28px}
+        .score-ring{position:relative;width:200px;height:200px;margin:0 auto 24px}
+        .score-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+        .ring-bg{fill:none;stroke:var(--glass-3);stroke-width:10}
+        .ring-fill{fill:none;stroke:url(#scoreGrad);stroke-width:10;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 2s var(--ease-out)}
+        .score-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+        .score-num{font-size:56px;font-weight:800;background:linear-gradient(135deg,var(--violet-400),var(--cyan-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+        .score-label{font-size:12px;color:var(--text-35);font-weight:500;letter-spacing:0.05em;margin-top:4px}
+        .score-tier{font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--text-100),var(--violet-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+        .score-desc{font-size:14px;color:var(--text-50);max-width:300px;margin:0 auto;line-height:1.5}
+
+        .breakdown-section{padding:24px;margin-bottom:18px}
+        .breakdown-title{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-20);margin-bottom:20px}
+        .skill-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+        .skill-row:last-child{margin-bottom:0}
+        .skill-name{width:100px;font-size:11px;color:var(--text-35);font-weight:500}
+        .skill-track{flex:1;height:7px;background:var(--glass-3);border-radius:4px;overflow:hidden}
+        .skill-fill{height:100%;border-radius:4px;transition:width 1.2s var(--ease-out)}
+        .skill-fill.high{background:linear-gradient(90deg,var(--violet-500),var(--cyan-400))}
+        .skill-fill.mid{background:linear-gradient(90deg,var(--amber-500),var(--amber-400))}
+        .skill-fill.low{background:linear-gradient(90deg,var(--rose-500),var(--rose-400))}
+        .skill-val{width:40px;text-align:right;font-size:12px;font-weight:700;color:var(--text-50)}
+
+        .insight-section{padding:24px;background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(6,182,212,0.04));border:1px solid rgba(139,92,246,0.15);border-radius:20px;margin-bottom:18px;position:relative;overflow:hidden}
+        .insight-section::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,0.3),transparent)}
+        .insight-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+        .insight-icon{width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--violet-500),var(--violet-600));border-radius:12px;box-shadow:0 4px 16px -4px rgba(139,92,246,0.5)}
+        .insight-icon svg{width:20px;height:20px;color:white}
+        .insight-label{font-size:14px;font-weight:600;color:var(--text-100)}
+        .insight-text{font-size:13px;color:var(--text-50);line-height:1.65}
+
+        /* Pricing */
+        .pricing-section{padding:24px 0;margin-bottom:18px}
+        .pricing-header{text-align:center;margin-bottom:24px}
+        .pricing-title{font-size:20px;font-weight:700;background:linear-gradient(135deg,var(--text-100),var(--violet-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+        .pricing-sub{font-size:13px;color:var(--text-35);line-height:1.5}
+        .pricing-cards{display:flex;flex-direction:column;gap:16px}
+        .plan-card{padding:24px;position:relative;transition:all 0.3s var(--ease)}
+        .plan-card:hover{transform:translateY(-4px)}
+        .plan-card.featured{border-color:var(--violet-400);background:linear-gradient(145deg,rgba(139,92,246,0.12) 0%,var(--glass-1) 50%,var(--glass-2) 100%);margin-top:16px;overflow:visible}
+        .plan-card.featured::before{background:linear-gradient(90deg,transparent,rgba(139,92,246,0.4),transparent)}
+        .plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:linear-gradient(135deg,var(--violet-500),var(--cyan-500));border-radius:100px;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:white;box-shadow:0 4px 16px -4px rgba(139,92,246,0.5)}
+        .plan-badge svg{width:10px;height:10px}
+        .plan-name{font-size:18px;font-weight:700;color:var(--text-100);margin-bottom:4px}
+        .plan-tagline{font-size:12px;color:var(--text-35);margin-bottom:16px}
+        .plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:20px}
+        .plan-amount{font-size:36px;font-weight:700;background:linear-gradient(135deg,var(--text-100),var(--violet-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .plan-period{font-size:13px;color:var(--text-35)}
+        .plan-features{list-style:none;margin-bottom:24px}
+        .plan-features li{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text-50);line-height:1.5;margin-bottom:10px}
+        .plan-features li:last-child{margin-bottom:0}
+        .plan-features li::before{content:'';width:16px;height:16px;flex-shrink:0;margin-top:2px;background:linear-gradient(135deg,var(--violet-500),var(--cyan-400));border-radius:50%;display:flex;align-items:center;justify-content:center;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");background-size:10px;background-repeat:no-repeat;background-position:center}
+        .plan-btn{width:100%;padding:15px 24px;border:none;border-radius:14px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.3s var(--ease);display:flex;align-items:center;justify-content:center;gap:8px}
+        .plan-btn svg{width:16px;height:16px}
+        .plan-btn-secondary{background:var(--glass-4);border:1px solid var(--border-2);color:var(--text-85)}
+        .plan-btn-secondary:hover{background:var(--glass-5);border-color:var(--border-3)}
+        .plan-btn-primary{background:linear-gradient(135deg,var(--violet-500),var(--violet-600));color:white;box-shadow:0 1px 0 0 rgba(255,255,255,0.15) inset,0 8px 24px -8px rgba(139,92,246,0.5)}
+        .plan-btn-primary:hover{transform:translateY(-2px);box-shadow:0 1px 0 0 rgba(255,255,255,0.2) inset,0 12px 32px -8px rgba(139,92,246,0.6)}
+
+        .share-section{text-align:center;padding:20px 0;border-top:1px solid var(--border-1);margin-top:8px}
+        .share-btn-link{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;background:var(--glass-2);border:1px solid var(--border-1);border-radius:10px;font-size:12px;font-weight:500;color:var(--text-50);cursor:pointer;transition:all 0.3s}
+        .share-btn-link:hover{background:var(--glass-3);border-color:var(--border-2);color:var(--text-70)}
+        .share-btn-link svg{width:14px;height:14px}
+
+        /* Store Modal */
+        .store-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(16px);z-index:300;opacity:0;visibility:hidden;pointer-events:none;transition:all 0.35s var(--ease)}
+        .store-modal-bg.show{opacity:1;visibility:visible;pointer-events:auto}
+        .store-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);width:calc(100% - 32px);max-width:360px;padding:32px 28px;z-index:301;opacity:0;visibility:hidden;pointer-events:none;transition:all 0.45s var(--ease-spring)}
+        .store-modal.show{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+        .store-modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--glass-3);border:1px solid var(--border-1);border-radius:8px;cursor:pointer;transition:all 0.2s}
+        .store-modal-close:hover{background:var(--glass-4)}
+        .store-modal-close svg{width:16px;height:16px;color:var(--text-50)}
+        .store-modal-title{font-size:18px;font-weight:700;color:var(--text-100);text-align:center;margin-bottom:8px}
+        .store-modal-plan{font-size:13px;color:var(--violet-400);text-align:center;margin-bottom:24px;font-weight:600}
+        .store-btns{display:flex;flex-direction:column;gap:12px}
+        .store-btn{display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--glass-2);border:1px solid var(--border-2);border-radius:14px;text-decoration:none;color:var(--text-100);transition:all 0.3s var(--ease)}
+        .store-btn:hover{background:var(--glass-4);border-color:var(--border-3);transform:translateY(-2px)}
+        .store-btn-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:white;border-radius:10px;flex-shrink:0}
+        .store-btn-icon svg{width:24px;height:24px;color:var(--void)}
+        .store-btn-text{flex:1}
+        .store-btn-label{font-size:10px;color:var(--text-35);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px}
+        .store-btn-name{font-size:15px;font-weight:600}
+        .store-btn-arrow{width:20px;height:20px;color:var(--text-35)}
+
+        @media(max-width:400px){.skill-name{width:80px;font-size:10px}}
+    </style>
+</head>
+<body>
+    <div class="ambient"><div class="ambient-mesh"></div><div class="ambient-orb orb-1"></div><div class="ambient-orb orb-2"></div><div class="ambient-orb orb-3"></div><div class="ambient-noise"></div><div class="ambient-vignette"></div></div>
+
+    <div class="app">
+        <div class="topbar glass">
+            <span class="topbar-brand">Powered by <b>Conversly</b></span>
+            <div class="topbar-score" id="topScore">
+                <span class="topbar-num" id="topNum">0</span>
+                <span class="topbar-label">pts</span>
+            </div>
+        </div>
+
+        <!-- INTRO SCREEN -->
+        <div class="screen active" id="introScreen">
+            <div class="intro">
+                <div class="intro-badge glass-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>2 Minute Assessment</span>
+                </div>
+                <h1 class="intro-title">
+                    <span class="line">Your</span>
+                    <span class="line"><span class="gradient">Meeting Influence</span></span>
+                    <span class="line">Score</span>
+                </h1>
+                <p class="intro-desc">Discover how much influence you actually command in meetings — and what invisible patterns are costing you visibility, credibility, and career momentum.</p>
+                
+                <div class="stat-card glass">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <div class="stat-text"><strong>Top performers</strong> speak up 3.2x more in meetings than average contributors — and are promoted 2.6x faster.</div>
+                </div>
+
+                <div class="dims-section">
+                    <div class="dims-label">This assessment measures</div>
+                    <div class="dims-grid">
+                        <span class="dim-chip">Speaking Up</span>
+                        <span class="dim-chip">Handling Interruptions</span>
+                        <span class="dim-chip">Idea Ownership</span>
+                        <span class="dim-chip">Executive Presence</span>
+                        <span class="dim-chip">Strategic Framing</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-full" onclick="startGame()">
+                    Calculate My Score
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- GAME SCREEN -->
+        <div class="screen" id="gameScreen">
+            <div class="game-header">
+                <div class="progress-wrap">
+                    <span class="progress-text"><span id="qNum">1</span>/8</span>
+                    <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+                </div>
+                <div class="cat-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="catIcon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                    <span id="catLabel">SPEAKING UP</span>
+                </div>
+            </div>
+
+            <div class="scenario-card glass-card">
+                <p class="scenario-text" id="scenarioText">Loading scenario...</p>
+            </div>
+
+            <div class="answers-wrap" id="answersWrap"></div>
+
+            <div class="running-score" id="runningLabel">0 points earned</div>
+        </div>
+
+        <!-- RESULTS SCREEN -->
+        <div class="screen" id="resultsScreen">
+            <div class="results">
+                <div class="results-head">
+                    <div class="score-ring">
+                        <svg width="200" height="200" viewBox="0 0 200 200">
+                            <defs>
+                                <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#8b5cf6"/>
+                                    <stop offset="100%" stop-color="#22d3ee"/>
+                                </linearGradient>
+                            </defs>
+                            <circle class="ring-bg" cx="100" cy="100" r="70"/>
+                            <circle class="ring-fill" id="ringFill" cx="100" cy="100" r="70"/>
+                        </svg>
+                        <div class="score-center">
+                            <div class="score-num" id="scoreNum">0</div>
+                            <div class="score-label">out of 100</div>
+                        </div>
+                    </div>
+                    <div class="score-tier" id="scoreTier">Calculating...</div>
+                    <div class="score-desc" id="scoreDesc">Analyzing your meeting patterns...</div>
+                </div>
+
+                <div class="breakdown-section glass-card">
+                    <div class="breakdown-title">Influence Breakdown</div>
+                    <div class="skill-row"><span class="skill-name">Speaking Up</span><div class="skill-track"><div class="skill-fill" id="speakFill"></div></div><span class="skill-val" id="speakVal">0%</span></div>
+                    <div class="skill-row"><span class="skill-name">Interruption Handling</span><div class="skill-track"><div class="skill-fill" id="intFill"></div></div><span class="skill-val" id="intVal">0%</span></div>
+                    <div class="skill-row"><span class="skill-name">Idea Ownership</span><div class="skill-track"><div class="skill-fill" id="ownFill"></div></div><span class="skill-val" id="ownVal">0%</span></div>
+                    <div class="skill-row"><span class="skill-name">Executive Presence</span><div class="skill-track"><div class="skill-fill" id="execFill"></div></div><span class="skill-val" id="execVal">0%</span></div>
+                    <div class="skill-row"><span class="skill-name">Strategic Framing</span><div class="skill-track"><div class="skill-fill" id="frameFill"></div></div><span class="skill-val" id="frameVal">0%</span></div>
+                </div>
+
+                <div class="insight-section">
+                    <div class="insight-head">
+                        <div class="insight-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div>
+                        <span class="insight-label" id="insightLabel">Your Growth Edge</span>
+                    </div>
+                    <p class="insight-text" id="insightText">Analyzing your results...</p>
+                </div>
+
+                <!-- PRICING -->
+                <div class="pricing-section">
+                    <div class="pricing-header">
+                        <div class="pricing-title">Train Your Meeting Presence</div>
+                        <div class="pricing-sub">Practice the moments that build influence</div>
+                    </div>
+                    <div class="pricing-cards">
+                        <div class="plan-card glass-card">
+                            <div class="plan-name">Starter</div>
+                            <div class="plan-tagline">Build your meeting confidence</div>
+                            <div class="plan-price"><span class="plan-amount">$12.99</span><span class="plan-period">/ month</span></div>
+                            <ul class="plan-features">
+                                <li>Unlimited AI practice sessions</li>
+                                <li>Meeting scenario simulations</li>
+                                <li>Real-time feedback on delivery</li>
+                            </ul>
+                            <button class="plan-btn plan-btn-secondary" onclick="selectPlan('Starter')">
+                                Start Free Trial
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                        <div class="plan-card glass-card featured">
+                            <div class="plan-badge">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                Most Popular
+                            </div>
+                            <div class="plan-name">Pro</div>
+                            <div class="plan-tagline">Command every room you enter</div>
+                            <div class="plan-price"><span class="plan-amount">$24.99</span><span class="plan-period">/ month</span></div>
+                            <ul class="plan-features">
+                                <li>Everything in Starter</li>
+                                <li>Executive presence training</li>
+                                <li>Advanced influence tactics</li>
+                                <li>Personalized coaching insights</li>
+                            </ul>
+                            <button class="plan-btn plan-btn-primary" onclick="selectPlan('Pro')">
+                                Start Free Trial
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="share-section">
+                    <button class="share-btn-link" onclick="shareResults()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                        Share Your Score
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Store Modal -->
+    <div class="store-modal-bg" id="storeModalBg" onclick="closeStoreModal()"></div>
+    <div class="store-modal glass-card" id="storeModal">
+        <div class="store-modal-close" onclick="closeStoreModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+        <div class="store-modal-title">Download Conversly</div>
+        <div class="store-modal-plan" id="storeModalPlan">Pro Plan Selected</div>
+        <div class="store-btns">
+            <a href="https://apps.apple.com/app/conversly" target="_blank" class="store-btn">
+                <div class="store-btn-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                </div>
+                <div class="store-btn-text">
+                    <div class="store-btn-label">Download on the</div>
+                    <div class="store-btn-name">App Store</div>
+                </div>
+                <svg class="store-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.conversly" target="_blank" class="store-btn">
+                <div class="store-btn-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.67-1.5 1.5-1.5.4 0 .77.15 1.06.44L17.1 11.5c.59.54.59 1.46 0 2L5.56 22.56c-.29.29-.66.44-1.06.44-.83 0-1.5-.67-1.5-1.5zm14.1-8.5L5 2.5v19l12.1-9.5zM20 12l-3-2.5v5l3-2.5z"/></svg>
+                </div>
+                <div class="store-btn-text">
+                    <div class="store-btn-label">Get it on</div>
+                    <div class="store-btn-name">Google Play</div>
+                </div>
+                <svg class="store-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </div>
+
+<script>
+const scenarios = [
+    {
+        cat: "SPEAKING UP",
+        text: "You have a relevant insight during a fast-moving discussion, but senior leaders are dominating the conversation. <b>What do you do?</b>",
+        answers: [
+            { text: "Wait for a brief pause, then interject: \"Building on that — I have data that supports this direction...\"", score: 100, tier: "high", cat: "speak" },
+            { text: "Raise your hand slightly and wait to be acknowledged before speaking", score: 65, tier: "mid", cat: "speak" },
+            { text: "Send your thought in the chat or follow up via email after the meeting", score: 35, tier: "low", cat: "speak" },
+            { text: "Stay quiet — they probably already considered it", score: 10, tier: "low", cat: "speak" }
+        ]
+    },
+    {
+        cat: "INTERRUPTION HANDLING",
+        text: "You're mid-sentence when a colleague cuts you off to share their own point. <b>How do you respond?</b>",
+        answers: [
+            { text: "\"I want to hear that — let me finish this thought first.\" Then complete your point.", score: 100, tier: "high", cat: "int" },
+            { text: "Pause, let them finish, then say \"Going back to what I was saying...\"", score: 70, tier: "mid", cat: "int" },
+            { text: "Let it go and hope you can circle back later if there's time", score: 30, tier: "low", cat: "int" },
+            { text: "Stay quiet — their point was probably more important anyway", score: 10, tier: "low", cat: "int" }
+        ]
+    },
+    {
+        cat: "IDEA OWNERSHIP",
+        text: "Someone else presents an idea you shared with them privately last week — without crediting you. <b>What's your move?</b>",
+        answers: [
+            { text: "\"Great to see this gaining traction — when I originally proposed this to [name], I also suggested we consider...\"", score: 100, tier: "high", cat: "own" },
+            { text: "Mention to your manager privately after the meeting", score: 55, tier: "mid", cat: "own" },
+            { text: "Let it go — you'll get credit for execution later", score: 25, tier: "low", cat: "own" },
+            { text: "Assume they forgot and don't make it awkward", score: 10, tier: "low", cat: "own" }
+        ]
+    },
+    {
+        cat: "EXECUTIVE PRESENCE",
+        text: "A VP asks you a question you don't know the answer to in front of the team. <b>How do you handle it?</b>",
+        answers: [
+            { text: "\"I don't have that number on hand, but here's what I do know: [relevant context]. I'll follow up with specifics by EOD.\"", score: 100, tier: "high", cat: "exec" },
+            { text: "\"I'm not sure — let me check and get back to you.\"", score: 60, tier: "mid", cat: "exec" },
+            { text: "Attempt an answer even though you're not confident in it", score: 30, tier: "low", cat: "exec" },
+            { text: "Deflect to a colleague who might know", score: 20, tier: "low", cat: "exec" }
+        ]
+    },
+    {
+        cat: "STRATEGIC FRAMING",
+        text: "You need buy-in for a project that requires resources. <b>How do you frame your ask?</b>",
+        answers: [
+            { text: "\"This initiative solves [business problem] and has [X] projected ROI. I need [specific resources] to execute by [date].\"", score: 100, tier: "high", cat: "frame" },
+            { text: "\"I think this could be really valuable for the team. Can we discuss resources?\"", score: 55, tier: "mid", cat: "frame" },
+            { text: "Present the idea and hope someone offers to help allocate resources", score: 25, tier: "low", cat: "frame" },
+            { text: "Start working on it yourself and ask for help when you get stuck", score: 15, tier: "low", cat: "frame" }
+        ]
+    },
+    {
+        cat: "SPEAKING UP",
+        text: "The meeting is about to end with no clear decision made. <b>What do you do?</b>",
+        answers: [
+            { text: "\"Before we wrap — can we confirm the decision and next steps? I'm hearing X, Y, Z. Is that accurate?\"", score: 100, tier: "high", cat: "speak" },
+            { text: "Send a follow-up email summarizing what you think the decision was", score: 50, tier: "mid", cat: "speak" },
+            { text: "Wait for someone more senior to clarify", score: 25, tier: "low", cat: "speak" },
+            { text: "Assume it'll get sorted out in the next meeting", score: 10, tier: "low", cat: "speak" }
+        ]
+    },
+    {
+        cat: "INTERRUPTION HANDLING",
+        text: "You're presenting and a senior stakeholder keeps checking their phone. <b>How do you re-engage them?</b>",
+        answers: [
+            { text: "Pause briefly, then directly ask: \"[Name], I'd value your input on this — does this align with what you're seeing?\"", score: 100, tier: "high", cat: "int" },
+            { text: "Speed up your presentation to get to the parts they might care about", score: 45, tier: "mid", cat: "int" },
+            { text: "Continue as planned and hope they catch up later", score: 25, tier: "low", cat: "int" },
+            { text: "Feel discouraged but push through without addressing it", score: 10, tier: "low", cat: "int" }
+        ]
+    },
+    {
+        cat: "EXECUTIVE PRESENCE",
+        text: "Someone openly disagrees with your recommendation in the meeting. <b>How do you respond?</b>",
+        answers: [
+            { text: "\"I appreciate that perspective. Here's the data behind my recommendation: [evidence]. What would change your view?\"", score: 100, tier: "high", cat: "exec" },
+            { text: "\"That's a fair point — let me think about that and get back to you.\"", score: 55, tier: "mid", cat: "exec" },
+            { text: "Immediately concede and suggest doing more research", score: 25, tier: "low", cat: "exec" },
+            { text: "Get defensive and double down without new evidence", score: 15, tier: "low", cat: "exec" }
+        ]
+    }
+];
+
+const tiers = [
+    { min: 85, name: "High Influence", desc: "You command attention and drive decisions. People look to you to lead." },
+    { min: 65, name: "Growing Presence", desc: "You contribute meaningfully but leave some influence on the table." },
+    { min: 45, name: "Emerging Voice", desc: "You have good instincts but hesitate in key moments." },
+    { min: 0, name: "Invisible Contributor", desc: "Your impact is getting lost. You're doing the work but not getting the credit." }
+];
+
+const insights = {
+    speak: { low: "You're staying silent when your voice matters most. Every unspoken idea is a missed opportunity for visibility.", high: "You speak up when it counts. This drives your visibility and influence." },
+    int: { low: "Interruptions are derailing your momentum. Learning to reclaim the floor is a high-leverage skill.", high: "You handle interruptions with confidence. Your voice doesn't get lost." },
+    own: { low: "Your ideas are getting credited to others. Subtle ownership tactics can fix this fast.", high: "You claim credit where it's due. Your contributions don't go unnoticed." },
+    exec: { low: "Pressure situations are revealing gaps in presence. Poise under fire is trainable.", high: "You project confidence even under pressure. This builds trust and authority." },
+    frame: { low: "Your asks aren't landing. Strategic framing turns 'maybe' into 'yes'.", high: "You frame asks strategically. This accelerates buy-in and resources." }
+};
+
+let q = 0, totalScore = 0, locked = false;
+let catScores = { speak: [], int: [], own: [], exec: [], frame: [] };
+
+const $ = id => document.getElementById(id);
+
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    $(id).classList.add('active');
+}
+
+function startGame() {
+    q = 0;
+    totalScore = 0;
+    catScores = { speak: [], int: [], own: [], exec: [], frame: [] };
+    $('topScore').style.display = 'flex';
+    $('topNum').textContent = '0';
+    showScreen('gameScreen');
+    loadQ();
+}
+
+function loadQ() {
+    if (q >= scenarios.length) {
+        showResults();
+        return;
+    }
+    
+    locked = false;
+    const s = scenarios[q];
+    
+    $('qNum').textContent = q + 1;
+    $('progFill').style.width = `${((q + 1) / 8) * 100}%`;
+    $('catLabel').textContent = s.cat;
+    $('scenarioText').innerHTML = s.text;
+    $('runningLabel').textContent = totalScore + ' points earned';
+    
+    const wrap = $('answersWrap');
+    wrap.innerHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    const shuffled = [...s.answers].sort(() => Math.random() - 0.5);
+    
+    shuffled.forEach((a, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'answer';
+        btn.type = 'button';
+        btn.innerHTML = `
+            <span class="answer-letter">${letters[i]}</span>
+            <span class="answer-content">
+                <span class="answer-text">${a.text}</span>
+                <span class="answer-score ${a.tier}">${a.score >= 70 ? '+' : ''}${a.score} pts</span>
+            </span>
+        `;
+        btn._data = a;
+        wrap.appendChild(btn);
+    });
+    
+    wrap.onclick = e => {
+        const btn = e.target.closest('.answer');
+        if (btn && !btn.classList.contains('locked') && btn._data) pick(btn, btn._data);
+    };
+}
+
+function pick(btn, ans) {
+    if (locked) return;
+    locked = true;
+    
+    btn.classList.add('selected');
+    document.querySelectorAll('.answer').forEach(a => {
+        a.classList.add('locked', 'reveal');
+    });
+    
+    totalScore += ans.score;
+    $('topNum').textContent = totalScore;
+    $('runningLabel').textContent = totalScore + ' points earned';
+    
+    catScores[ans.cat].push(ans.score);
+    
+    setTimeout(() => {
+        q++;
+        loadQ();
+    }, 1200);
+}
+
+function showResults() {
+    $('topScore').style.display = 'none';
+    showScreen('resultsScreen');
+    
+    // Calculate final score (0-100)
+    const maxPossible = scenarios.length * 100;
+    const finalScore = Math.round((totalScore / maxPossible) * 100);
+    
+    // Animate score
+    setTimeout(() => {
+        animNum($('scoreNum'), 0, finalScore, 1800);
+        const circumference = 2 * Math.PI * 70;
+        const offset = circumference - (finalScore / 100) * circumference;
+        $('ringFill').style.strokeDashoffset = offset;
+    }, 300);
+    
+    // Get tier
+    const tier = tiers.find(t => finalScore >= t.min);
+    setTimeout(() => {
+        $('scoreTier').textContent = tier.name;
+        $('scoreDesc').textContent = tier.desc;
+    }, 1600);
+    
+    // Calculate category averages
+    const catAvgs = {};
+    Object.keys(catScores).forEach(k => {
+        const arr = catScores[k];
+        catAvgs[k] = arr.length > 0 ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : 0;
+    });
+    
+    // Show category bars
+    setTimeout(() => {
+        const catMap = { speak: 'speak', int: 'int', own: 'own', exec: 'exec', frame: 'frame' };
+        const fillMap = { speak: 'speakFill', int: 'intFill', own: 'ownFill', exec: 'execFill', frame: 'frameFill' };
+        const valMap = { speak: 'speakVal', int: 'intVal', own: 'ownVal', exec: 'execVal', frame: 'frameVal' };
+        
+        Object.keys(catAvgs).forEach(k => {
+            const v = catAvgs[k];
+            const fill = $(fillMap[k]);
+            const val = $(valMap[k]);
+            fill.style.width = `${v}%`;
+            fill.className = `skill-fill ${v >= 70 ? 'high' : v >= 45 ? 'mid' : 'low'}`;
+            val.textContent = `${v}%`;
+        });
+    }, 600);
+    
+    // Show insight
+    const weakest = Object.entries(catAvgs).sort((a, b) => a[1] - b[1])[0];
+    const strongest = Object.entries(catAvgs).sort((a, b) => b[1] - a[1])[0];
+    const names = { speak: 'Speaking Up', int: 'Interruption Handling', own: 'Idea Ownership', exec: 'Executive Presence', frame: 'Strategic Framing' };
+    
+    setTimeout(() => {
+        if (weakest[1] < 55) {
+            $('insightLabel').textContent = `Biggest Gap: ${names[weakest[0]]}`;
+            $('insightText').textContent = insights[weakest[0]].low;
+        } else {
+            $('insightLabel').textContent = `Key Strength: ${names[strongest[0]]}`;
+            $('insightText').textContent = insights[strongest[0]].high;
+        }
+    }, 2200);
+    
+    window.gameResults = { score: finalScore, tier: tier.name, catAvgs };
+}
+
+function animNum(el, start, end, dur) {
+    const t0 = performance.now();
+    function tick(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        const current = start + (end - start) * (1 - Math.pow(1 - p, 3));
+        el.textContent = Math.round(current);
+        if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+}
+
+function shareResults() {
+    const r = window.gameResults;
+    const text = `My Meeting Influence Score: ${r.score}/100 (${r.tier})\n\nHow much influence do YOU command in meetings?\n\nTake the 2-min assessment: ${location.href}`;
+    if (navigator.share) {
+        navigator.share({ title: 'My Meeting Influence Score', text, url: location.href }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(text).then(() => alert('Copied!')).catch(() => alert(text));
+    }
+}
+
+function selectPlan(planName) {
+    $('storeModalPlan').textContent = planName + ' Plan Selected';
+    $('storeModalBg').classList.add('show');
+    $('storeModal').classList.add('show');
+}
+
+function closeStoreModal() {
+    $('storeModalBg').classList.remove('show');
+    $('storeModal').classList.remove('show');
+}
+</script>
+</body>
+</html>
