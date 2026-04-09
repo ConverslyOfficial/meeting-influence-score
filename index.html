@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <title>Meeting Influence Score | Conversly</title>
+    <meta name="description" content="Discover how much influence you command in meetings with this free 2-minute assessment. Measure your speaking up, interruption handling, idea ownership, executive presence, and strategic framing skills.">
+    <link rel="icon" type="image/png" href="https://image2url.com/r2/default/images/1775753086637-dd19f16a-66d1-4545-a1c6-cb72a44cf442.png">
+    <meta property="og:title" content="Meeting Influence Score | Conversly">
+    <meta property="og:description" content="Discover how much influence you command in meetings with this free 2-minute assessment.">
+    <meta property="og:image" content="https://image2url.com/r2/default/images/1775752278024-8616a4ce-8371-4d88-bb5f-b40d6db1c6a1.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Meeting Influence Score | Conversly">
+    <meta name="twitter:description" content="Discover how much influence you command in meetings with this free 2-minute assessment.">
+    <meta name="twitter:image" content="https://image2url.com/r2/default/images/1775752278024-8616a4ce-8371-4d88-bb5f-b40d6db1c6a1.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
@@ -46,8 +56,10 @@
         .glass-card::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--shine-3),transparent);pointer-events:none}
         .glass-pill{background:linear-gradient(135deg,var(--glass-3) 0%,var(--glass-2) 100%);border:1px solid var(--border-2);border-radius:100px;backdrop-filter:blur(var(--blur-md));-webkit-backdrop-filter:blur(var(--blur-md));box-shadow:0 1px 0 0 var(--shine-1) inset,0 4px 12px -4px rgba(0,0,0,0.3)}
 
-        .app{position:relative;z-index:1;max-width:460px;margin:0 auto;padding:16px;min-height:100dvh;display:flex;flex-direction:column}
-        .topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;margin-bottom:18px}
+        .app{position:relative;z-index:1;max-width:460px;margin:0 auto;padding:12px;min-height:100dvh;display:flex;flex-direction:column}
+        @media(max-height:750px){.app{padding:8px}}
+        .topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;margin-bottom:12px}
+        @media(max-height:750px){.topbar{padding:8px 12px;margin-bottom:8px}}
         .topbar-brand{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-35)}
         .topbar-brand b{background:linear-gradient(135deg,var(--violet-400),var(--cyan-400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700}
         .topbar-score{display:none;align-items:baseline;gap:5px;padding:8px 14px;background:var(--glass-2);border:1px solid var(--border-1);border-radius:10px}
@@ -58,28 +70,41 @@
         .screen.active{display:flex;animation:screenIn 0.6s var(--ease-out)}
         @keyframes screenIn{from{opacity:0;transform:translateY(20px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 
-        .intro{flex:1;display:flex;flex-direction:column;justify-content:center;padding:10px 0 30px}
-        .intro-badge{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;margin-bottom:28px;width:fit-content}
+        .intro{flex:1;display:flex;flex-direction:column;justify-content:center;padding:5px 0 15px}
+        @media(max-height:750px){.intro{padding:0}}
+        .intro-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;margin-bottom:16px;width:fit-content}
+        @media(max-height:750px){.intro-badge{padding:6px 12px;margin-bottom:10px}}
         .intro-badge svg{width:14px;height:14px;color:var(--violet-400)}
-        .intro-badge span{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;background:linear-gradient(135deg,var(--violet-300),var(--cyan-400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .intro-title{font-size:clamp(34px,8.5vw,44px);font-weight:700;line-height:1.08;letter-spacing:-0.04em;margin-bottom:22px}
+        .intro-badge span{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;background:linear-gradient(135deg,var(--violet-300),var(--cyan-400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .intro-title{font-size:clamp(28px,7vw,40px);font-weight:700;line-height:1.08;letter-spacing:-0.04em;margin-bottom:14px}
+        @media(max-height:750px){.intro-title{font-size:clamp(24px,6vw,32px);margin-bottom:10px}}
         .intro-title .line{display:block;text-shadow:0 0 80px rgba(255,255,255,0.08)}
         .intro-title .gradient{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:500;background:linear-gradient(135deg,var(--violet-400) 0%,var(--cyan-400) 50%,var(--violet-300) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:shimmer 8s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(139,92,246,0.3))}
         @keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-        .intro-desc{font-size:15px;color:var(--text-50);line-height:1.65;margin-bottom:32px;max-width:360px}
+        .intro-desc{font-size:14px;color:var(--text-50);line-height:1.55;margin-bottom:18px;max-width:360px}
+        @media(max-height:750px){.intro-desc{font-size:13px;margin-bottom:12px;line-height:1.45}}
         
-        .stat-card{display:flex;align-items:center;gap:16px;padding:18px 20px;margin-bottom:32px}
-        .stat-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05));border:1px solid rgba(139,92,246,0.2);border-radius:14px;flex-shrink:0}
-        .stat-icon svg{width:22px;height:22px;color:var(--violet-400)}
-        .stat-text{font-size:13px;color:var(--text-50);line-height:1.55}
+        .stat-card{display:flex;align-items:center;gap:12px;padding:14px 16px;margin-bottom:18px}
+        @media(max-height:750px){.stat-card{padding:10px 12px;margin-bottom:12px;gap:10px}}
+        .stat-icon{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05));border:1px solid rgba(139,92,246,0.2);border-radius:12px;flex-shrink:0}
+        @media(max-height:750px){.stat-icon{width:36px;height:36px;border-radius:10px}}
+        .stat-icon svg{width:20px;height:20px;color:var(--violet-400)}
+        @media(max-height:750px){.stat-icon svg{width:18px;height:18px}}
+        .stat-text{font-size:12px;color:var(--text-50);line-height:1.45}
+        @media(max-height:750px){.stat-text{font-size:11px;line-height:1.4}}
         .stat-text strong{color:var(--violet-400);font-weight:600}
         
-        .dims-section{margin-bottom:36px}
-        .dims-label{font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-20);margin-bottom:14px}
-        .dims-grid{display:flex;flex-wrap:wrap;gap:8px}
-        .dim-chip{padding:10px 15px;font-size:11px;font-weight:500;color:var(--text-50);background:var(--glass-1);border:1px solid var(--border-1);border-radius:10px}
+        .dims-section{margin-bottom:20px}
+        @media(max-height:750px){.dims-section{margin-bottom:14px}}
+        .dims-label{font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-20);margin-bottom:10px}
+        @media(max-height:750px){.dims-label{margin-bottom:8px}}
+        .dims-grid{display:flex;flex-wrap:wrap;gap:6px}
+        @media(max-height:750px){.dims-grid{gap:4px}}
+        .dim-chip{padding:8px 12px;font-size:10px;font-weight:500;color:var(--text-50);background:var(--glass-1);border:1px solid var(--border-1);border-radius:8px}
+        @media(max-height:750px){.dim-chip{padding:6px 10px;font-size:9px}}
 
-        .btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:17px 30px;border:none;border-radius:16px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.4s var(--ease);position:relative;overflow:hidden}
+        .btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 26px;border:none;border-radius:14px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.4s var(--ease);position:relative;overflow:hidden}
+        @media(max-height:750px){.btn{padding:12px 22px;font-size:13px;border-radius:12px}}
         .btn::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.1) 0%,transparent 50%);pointer-events:none}
         .btn-primary{background:linear-gradient(135deg,var(--violet-500) 0%,var(--violet-600) 100%);color:white;box-shadow:0 1px 0 0 rgba(255,255,255,0.15) inset,0 -1px 0 0 rgba(0,0,0,0.1) inset,0 10px 30px -8px rgba(139,92,246,0.5),0 0 0 1px rgba(139,92,246,0.2)}
         .btn-primary:hover{transform:translateY(-3px);box-shadow:0 1px 0 0 rgba(255,255,255,0.2) inset,0 16px 40px -8px rgba(139,92,246,0.6)}
@@ -87,123 +112,198 @@
         .btn svg{width:18px;height:18px}
 
         /* Game Screen */
-        .game-header{margin-bottom:20px}
-        .progress-wrap{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+        .game-header{margin-bottom:12px}
+        @media(max-height:750px){.game-header{margin-bottom:8px}}
+        .progress-wrap{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+        @media(max-height:750px){.progress-wrap{margin-bottom:8px;gap:10px}}
         .progress-text{font-size:11px;font-weight:600;color:var(--text-35);letter-spacing:0.05em}
-        .progress-bar{flex:1;height:5px;background:var(--glass-3);border-radius:3px;overflow:hidden}
+        .progress-bar{flex:1;height:4px;background:var(--glass-3);border-radius:3px;overflow:hidden}
         .progress-fill{height:100%;background:linear-gradient(90deg,var(--violet-500),var(--cyan-400));border-radius:3px;transition:width 0.5s var(--ease-out)}
-        .cat-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(6,182,212,0.08));border:1px solid rgba(139,92,246,0.2);border-radius:8px;color:var(--violet-300)}
-        .cat-pill svg{width:12px;height:12px}
+        .cat-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(6,182,212,0.08));border:1px solid rgba(139,92,246,0.2);border-radius:6px;color:var(--violet-300)}
+        .cat-pill svg{width:11px;height:11px}
         
-        .scenario-card{padding:28px 24px;margin-bottom:20px}
-        .scenario-text{font-size:16px;line-height:1.6;color:var(--text-85)}
+        .scenario-card{padding:18px 16px;margin-bottom:12px}
+        @media(max-height:750px){.scenario-card{padding:14px 12px;margin-bottom:8px}}
+        .scenario-text{font-size:14px;line-height:1.5;color:var(--text-85)}
+        @media(max-height:750px){.scenario-text{font-size:13px;line-height:1.45}}
         .scenario-text b{color:var(--text-100);font-weight:600}
         
-        .answers-wrap{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
-        .answer{display:flex;align-items:flex-start;gap:14px;padding:18px 16px;background:var(--glass-2);border:1.5px solid var(--border-2);border-radius:16px;cursor:pointer;transition:all 0.3s var(--ease);text-align:left;font-family:var(--font)}
-        .answer:hover:not(.locked){background:var(--glass-3);border-color:var(--border-3);transform:translateY(-2px)}
+        .answers-wrap{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+        @media(max-height:750px){.answers-wrap{gap:6px;margin-bottom:6px}}
+        .answer{display:flex;align-items:flex-start;gap:10px;padding:12px 10px;background:var(--glass-2);border:1.5px solid var(--border-2);border-radius:12px;cursor:pointer;transition:all 0.3s var(--ease);text-align:left;font-family:var(--font)}
+        @media(max-height:750px){.answer{padding:10px 8px;gap:8px;border-radius:10px}}
+        .answer:hover:not(.locked){background:var(--glass-3);border-color:var(--border-3);transform:translateY(-1px)}
         .answer.selected{border-color:var(--violet-400);background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(6,182,212,0.06))}
         .answer.locked{opacity:0.5;cursor:default}
         .answer.locked.selected{opacity:1}
-        .answer-letter{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--glass-3);border:1px solid var(--border-2);border-radius:8px;font-size:11px;font-weight:700;color:var(--text-35);flex-shrink:0}
+        .answer-letter{width:24px;height:24px;display:flex;align-items:center;justify-content:center;background:var(--glass-3);border:1px solid var(--border-2);border-radius:6px;font-size:10px;font-weight:700;color:var(--text-35);flex-shrink:0}
+        @media(max-height:750px){.answer-letter{width:22px;height:22px;font-size:9px}}
         .answer.selected .answer-letter{background:linear-gradient(135deg,var(--violet-500),var(--cyan-500));border-color:transparent;color:white}
-        .answer-content{flex:1;display:flex;flex-direction:column;gap:6px}
-        .answer-text{font-size:13px;color:var(--text-70);line-height:1.5}
-        .answer-score{font-size:11px;font-weight:600;color:var(--text-35);opacity:0;transition:opacity 0.3s}
+        .answer-content{flex:1;display:flex;flex-direction:column;gap:4px}
+        .answer-text{font-size:12px;color:var(--text-70);line-height:1.4}
+        @media(max-height:750px){.answer-text{font-size:11px;line-height:1.35}}
+        .answer-score{font-size:10px;font-weight:600;color:var(--text-35);opacity:0;transition:opacity 0.3s}
         .answer.reveal .answer-score{opacity:1}
         .answer-score.high{color:var(--emerald-400)}
         .answer-score.mid{color:var(--amber-400)}
         .answer-score.low{color:var(--rose-400)}
 
-        .running-score{text-align:center;padding:12px;font-size:12px;color:var(--text-35);font-weight:500}
+        .custom-input-wrap{margin-top:8px}
+        @media(max-height:750px){.custom-input-wrap{margin-top:6px}}
+        .custom-input{width:100%;padding:12px 14px;background:var(--glass-2);border:1.5px solid var(--border-2);border-radius:10px;font-family:var(--font);font-size:12px;color:var(--text-85);outline:none;transition:all 0.3s var(--ease);resize:none}
+        @media(max-height:750px){.custom-input{padding:10px 12px;font-size:11px;border-radius:8px}}
+        .custom-input::placeholder{color:var(--text-35)}
+        .custom-input:focus{border-color:var(--violet-400);background:var(--glass-3)}
+        .custom-input-label{font-size:10px;color:var(--text-35);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+        .custom-input-label svg{width:12px;height:12px}
+        .custom-submit{margin-top:8px;padding:10px 18px;font-size:11px}
+        @media(max-height:750px){.custom-submit{padding:8px 14px;font-size:10px;margin-top:6px}}
+
+        .data-insight{padding:16px;margin-bottom:12px;background:linear-gradient(135deg,rgba(6,182,212,0.08),rgba(139,92,246,0.05));border:1px solid rgba(6,182,212,0.15);border-radius:14px}
+        @media(max-height:750px){.data-insight{padding:12px;margin-bottom:8px;border-radius:12px}}
+        .data-insight-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+        @media(max-height:750px){.data-insight-header{gap:8px;margin-bottom:8px}}
+        .data-insight-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--cyan-500),var(--violet-500));border-radius:8px;flex-shrink:0}
+        @media(max-height:750px){.data-insight-icon{width:28px;height:28px;border-radius:6px}}
+        .data-insight-icon svg{width:16px;height:16px;color:white}
+        @media(max-height:750px){.data-insight-icon svg{width:14px;height:14px}}
+        .data-insight-title{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--cyan-400)}
+        @media(max-height:750px){.data-insight-title{font-size:9px}}
+        .data-insight-stat{font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--cyan-300),var(--violet-400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+        @media(max-height:750px){.data-insight-stat{font-size:20px}}
+        .data-insight-text{font-size:11px;color:var(--text-50);line-height:1.45}
+        @media(max-height:750px){.data-insight-text{font-size:10px}}
+
+        .running-score{text-align:center;padding:8px;font-size:11px;color:var(--text-35);font-weight:500}
+        @media(max-height:750px){.running-score{padding:6px;font-size:10px}}
 
         /* Results */
-        .results{padding:20px 0}
-        .results-head{text-align:center;margin-bottom:28px}
-        .score-ring{position:relative;width:200px;height:200px;margin:0 auto 24px}
+        .results{padding:10px 0}
+        @media(max-height:750px){.results{padding:5px 0}}
+        .results-head{text-align:center;margin-bottom:18px}
+        @media(max-height:750px){.results-head{margin-bottom:12px}}
+        .score-ring{position:relative;width:160px;height:160px;margin:0 auto 16px}
+        @media(max-height:750px){.score-ring{width:130px;height:130px;margin-bottom:12px}}
         .score-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
-        .ring-bg{fill:none;stroke:var(--glass-3);stroke-width:10}
-        .ring-fill{fill:none;stroke:url(#scoreGrad);stroke-width:10;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 2s var(--ease-out)}
+        .ring-bg{fill:none;stroke:var(--glass-3);stroke-width:8}
+        .ring-fill{fill:none;stroke:url(#scoreGrad);stroke-width:8;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 2s var(--ease-out)}
         .score-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-        .score-num{font-size:56px;font-weight:800;background:linear-gradient(135deg,var(--violet-400),var(--cyan-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
-        .score-label{font-size:12px;color:var(--text-35);font-weight:500;letter-spacing:0.05em;margin-top:4px}
-        .score-tier{font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--text-100),var(--violet-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
-        .score-desc{font-size:14px;color:var(--text-50);max-width:300px;margin:0 auto;line-height:1.5}
+        .score-num{font-size:44px;font-weight:800;background:linear-gradient(135deg,var(--violet-400),var(--cyan-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+        @media(max-height:750px){.score-num{font-size:36px}}
+        .score-label{font-size:10px;color:var(--text-35);font-weight:500;letter-spacing:0.05em;margin-top:2px}
+        .score-tier{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--text-100),var(--violet-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+        @media(max-height:750px){.score-tier{font-size:16px}}
+        .score-desc{font-size:12px;color:var(--text-50);max-width:280px;margin:0 auto;line-height:1.4}
+        @media(max-height:750px){.score-desc{font-size:11px}}
 
-        .breakdown-section{padding:24px;margin-bottom:18px}
-        .breakdown-title{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-20);margin-bottom:20px}
-        .skill-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+        .breakdown-section{padding:16px;margin-bottom:12px}
+        @media(max-height:750px){.breakdown-section{padding:12px;margin-bottom:10px}}
+        .breakdown-title{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-20);margin-bottom:14px}
+        @media(max-height:750px){.breakdown-title{margin-bottom:10px;font-size:9px}}
+        .skill-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+        @media(max-height:750px){.skill-row{gap:8px;margin-bottom:8px}}
         .skill-row:last-child{margin-bottom:0}
-        .skill-name{width:100px;font-size:11px;color:var(--text-35);font-weight:500}
-        .skill-track{flex:1;height:7px;background:var(--glass-3);border-radius:4px;overflow:hidden}
-        .skill-fill{height:100%;border-radius:4px;transition:width 1.2s var(--ease-out)}
+        .skill-name{width:90px;font-size:10px;color:var(--text-35);font-weight:500}
+        @media(max-height:750px){.skill-name{width:80px;font-size:9px}}
+        .skill-track{flex:1;height:6px;background:var(--glass-3);border-radius:3px;overflow:hidden}
+        .skill-fill{height:100%;border-radius:3px;transition:width 1.2s var(--ease-out)}
         .skill-fill.high{background:linear-gradient(90deg,var(--violet-500),var(--cyan-400))}
         .skill-fill.mid{background:linear-gradient(90deg,var(--amber-500),var(--amber-400))}
         .skill-fill.low{background:linear-gradient(90deg,var(--rose-500),var(--rose-400))}
-        .skill-val{width:40px;text-align:right;font-size:12px;font-weight:700;color:var(--text-50)}
+        .skill-val{width:36px;text-align:right;font-size:11px;font-weight:700;color:var(--text-50)}
+        @media(max-height:750px){.skill-val{font-size:10px;width:32px}}
 
-        .insight-section{padding:24px;background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(6,182,212,0.04));border:1px solid rgba(139,92,246,0.15);border-radius:20px;margin-bottom:18px;position:relative;overflow:hidden}
+        .insight-section{padding:16px;background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(6,182,212,0.04));border:1px solid rgba(139,92,246,0.15);border-radius:16px;margin-bottom:14px;position:relative;overflow:hidden}
+        @media(max-height:750px){.insight-section{padding:12px;margin-bottom:10px;border-radius:14px}}
         .insight-section::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,0.3),transparent)}
-        .insight-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-        .insight-icon{width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--violet-500),var(--violet-600));border-radius:12px;box-shadow:0 4px 16px -4px rgba(139,92,246,0.5)}
-        .insight-icon svg{width:20px;height:20px;color:white}
-        .insight-label{font-size:14px;font-weight:600;color:var(--text-100)}
-        .insight-text{font-size:13px;color:var(--text-50);line-height:1.65}
+        .insight-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+        @media(max-height:750px){.insight-head{gap:10px;margin-bottom:8px}}
+        .insight-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--violet-500),var(--violet-600));border-radius:10px;box-shadow:0 4px 16px -4px rgba(139,92,246,0.5)}
+        @media(max-height:750px){.insight-icon{width:32px;height:32px;border-radius:8px}}
+        .insight-icon svg{width:18px;height:18px;color:white}
+        @media(max-height:750px){.insight-icon svg{width:16px;height:16px}}
+        .insight-label{font-size:13px;font-weight:600;color:var(--text-100)}
+        @media(max-height:750px){.insight-label{font-size:12px}}
+        .insight-text{font-size:12px;color:var(--text-50);line-height:1.5}
+        @media(max-height:750px){.insight-text{font-size:11px;line-height:1.45}}
 
         /* Pricing */
-        .pricing-section{padding:24px 0;margin-bottom:18px}
-        .pricing-header{text-align:center;margin-bottom:24px}
-        .pricing-title{font-size:20px;font-weight:700;background:linear-gradient(135deg,var(--text-100),var(--violet-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
-        .pricing-sub{font-size:13px;color:var(--text-35);line-height:1.5}
-        .pricing-cards{display:flex;flex-direction:column;gap:16px}
-        .plan-card{padding:24px;position:relative;transition:all 0.3s var(--ease)}
-        .plan-card:hover{transform:translateY(-4px)}
-        .plan-card.featured{border-color:var(--violet-400);background:linear-gradient(145deg,rgba(139,92,246,0.12) 0%,var(--glass-1) 50%,var(--glass-2) 100%);margin-top:16px;overflow:visible}
+        .pricing-section{padding:14px 0;margin-bottom:12px}
+        @media(max-height:750px){.pricing-section{padding:10px 0;margin-bottom:8px}}
+        .pricing-header{text-align:center;margin-bottom:16px}
+        @media(max-height:750px){.pricing-header{margin-bottom:12px}}
+        .pricing-title{font-size:17px;font-weight:700;background:linear-gradient(135deg,var(--text-100),var(--violet-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+        @media(max-height:750px){.pricing-title{font-size:15px}}
+        .pricing-sub{font-size:11px;color:var(--text-35);line-height:1.4}
+        @media(max-height:750px){.pricing-sub{font-size:10px}}
+        .pricing-cards{display:flex;flex-direction:column;gap:12px}
+        @media(max-height:750px){.pricing-cards{gap:10px}}
+        .plan-card{padding:16px;position:relative;transition:all 0.3s var(--ease)}
+        @media(max-height:750px){.plan-card{padding:12px}}
+        .plan-card:hover{transform:translateY(-2px)}
+        .plan-card.featured{border-color:var(--violet-400);background:linear-gradient(145deg,rgba(139,92,246,0.12) 0%,var(--glass-1) 50%,var(--glass-2) 100%);margin-top:12px;overflow:visible}
         .plan-card.featured::before{background:linear-gradient(90deg,transparent,rgba(139,92,246,0.4),transparent)}
-        .plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:linear-gradient(135deg,var(--violet-500),var(--cyan-500));border-radius:100px;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:white;box-shadow:0 4px 16px -4px rgba(139,92,246,0.5)}
+        .plan-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:linear-gradient(135deg,var(--violet-500),var(--cyan-500));border-radius:100px;font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:white;box-shadow:0 4px 16px -4px rgba(139,92,246,0.5)}
         .plan-badge svg{width:10px;height:10px}
-        .plan-name{font-size:18px;font-weight:700;color:var(--text-100);margin-bottom:4px}
-        .plan-tagline{font-size:12px;color:var(--text-35);margin-bottom:16px}
-        .plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:20px}
-        .plan-amount{font-size:36px;font-weight:700;background:linear-gradient(135deg,var(--text-100),var(--violet-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .plan-period{font-size:13px;color:var(--text-35)}
-        .plan-features{list-style:none;margin-bottom:24px}
-        .plan-features li{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text-50);line-height:1.5;margin-bottom:10px}
+        .plan-name{font-size:16px;font-weight:700;color:var(--text-100);margin-bottom:2px}
+        @media(max-height:750px){.plan-name{font-size:14px}}
+        .plan-tagline{font-size:11px;color:var(--text-35);margin-bottom:10px}
+        @media(max-height:750px){.plan-tagline{font-size:10px;margin-bottom:8px}}
+        .plan-price{display:flex;align-items:baseline;gap:3px;margin-bottom:12px}
+        @media(max-height:750px){.plan-price{margin-bottom:10px}}
+        .plan-amount{font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--text-100),var(--violet-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        @media(max-height:750px){.plan-amount{font-size:24px}}
+        .plan-period{font-size:11px;color:var(--text-35)}
+        .plan-features{list-style:none;margin-bottom:14px}
+        @media(max-height:750px){.plan-features{margin-bottom:10px}}
+        .plan-features li{display:flex;align-items:flex-start;gap:8px;font-size:11px;color:var(--text-50);line-height:1.4;margin-bottom:6px}
+        @media(max-height:750px){.plan-features li{font-size:10px;margin-bottom:4px;gap:6px}}
         .plan-features li:last-child{margin-bottom:0}
-        .plan-features li::before{content:'';width:16px;height:16px;flex-shrink:0;margin-top:2px;background:linear-gradient(135deg,var(--violet-500),var(--cyan-400));border-radius:50%;display:flex;align-items:center;justify-content:center;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");background-size:10px;background-repeat:no-repeat;background-position:center}
-        .plan-btn{width:100%;padding:15px 24px;border:none;border-radius:14px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.3s var(--ease);display:flex;align-items:center;justify-content:center;gap:8px}
-        .plan-btn svg{width:16px;height:16px}
+        .plan-features li::before{content:'';width:14px;height:14px;flex-shrink:0;margin-top:1px;background:linear-gradient(135deg,var(--violet-500),var(--cyan-400));border-radius:50%;display:flex;align-items:center;justify-content:center;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");background-size:9px;background-repeat:no-repeat;background-position:center}
+        @media(max-height:750px){.plan-features li::before{width:12px;height:12px;background-size:8px}}
+        .plan-btn{width:100%;padding:12px 20px;border:none;border-radius:12px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.3s var(--ease);display:flex;align-items:center;justify-content:center;gap:6px}
+        @media(max-height:750px){.plan-btn{padding:10px 16px;font-size:11px;border-radius:10px}}
+        .plan-btn svg{width:14px;height:14px}
         .plan-btn-secondary{background:var(--glass-4);border:1px solid var(--border-2);color:var(--text-85)}
         .plan-btn-secondary:hover{background:var(--glass-5);border-color:var(--border-3)}
         .plan-btn-primary{background:linear-gradient(135deg,var(--violet-500),var(--violet-600));color:white;box-shadow:0 1px 0 0 rgba(255,255,255,0.15) inset,0 8px 24px -8px rgba(139,92,246,0.5)}
         .plan-btn-primary:hover{transform:translateY(-2px);box-shadow:0 1px 0 0 rgba(255,255,255,0.2) inset,0 12px 32px -8px rgba(139,92,246,0.6)}
 
-        .share-section{text-align:center;padding:20px 0;border-top:1px solid var(--border-1);margin-top:8px}
-        .share-btn-link{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;background:var(--glass-2);border:1px solid var(--border-1);border-radius:10px;font-size:12px;font-weight:500;color:var(--text-50);cursor:pointer;transition:all 0.3s}
+        .share-section{text-align:center;padding:14px 0;border-top:1px solid var(--border-1);margin-top:6px}
+        @media(max-height:750px){.share-section{padding:10px 0}}
+        .share-btn-link{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;background:var(--glass-2);border:1px solid var(--border-1);border-radius:8px;font-size:11px;font-weight:500;color:var(--text-50);cursor:pointer;transition:all 0.3s}
         .share-btn-link:hover{background:var(--glass-3);border-color:var(--border-2);color:var(--text-70)}
-        .share-btn-link svg{width:14px;height:14px}
+        .share-btn-link svg{width:12px;height:12px}
 
         /* Store Modal */
         .store-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(16px);z-index:300;opacity:0;visibility:hidden;pointer-events:none;transition:all 0.35s var(--ease)}
         .store-modal-bg.show{opacity:1;visibility:visible;pointer-events:auto}
-        .store-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);width:calc(100% - 32px);max-width:360px;padding:32px 28px;z-index:301;opacity:0;visibility:hidden;pointer-events:none;transition:all 0.45s var(--ease-spring)}
+        .store-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);width:calc(100% - 24px);max-width:340px;padding:24px 20px;z-index:301;opacity:0;visibility:hidden;pointer-events:none;transition:all 0.45s var(--ease-spring)}
+        @media(max-height:750px){.store-modal{padding:20px 16px}}
         .store-modal.show{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
-        .store-modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--glass-3);border:1px solid var(--border-1);border-radius:8px;cursor:pointer;transition:all 0.2s}
+        .store-modal-close{position:absolute;top:12px;right:12px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--glass-3);border:1px solid var(--border-1);border-radius:6px;cursor:pointer;transition:all 0.2s}
         .store-modal-close:hover{background:var(--glass-4)}
-        .store-modal-close svg{width:16px;height:16px;color:var(--text-50)}
-        .store-modal-title{font-size:18px;font-weight:700;color:var(--text-100);text-align:center;margin-bottom:8px}
-        .store-modal-plan{font-size:13px;color:var(--violet-400);text-align:center;margin-bottom:24px;font-weight:600}
-        .store-btns{display:flex;flex-direction:column;gap:12px}
-        .store-btn{display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--glass-2);border:1px solid var(--border-2);border-radius:14px;text-decoration:none;color:var(--text-100);transition:all 0.3s var(--ease)}
+        .store-modal-close svg{width:14px;height:14px;color:var(--text-50)}
+        .store-modal-title{font-size:16px;font-weight:700;color:var(--text-100);text-align:center;margin-bottom:6px}
+        .store-modal-plan{font-size:12px;color:var(--violet-400);text-align:center;margin-bottom:18px;font-weight:600}
+        .store-btns{display:flex;flex-direction:column;gap:10px}
+        .store-btn{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--glass-2);border:1px solid var(--border-2);border-radius:12px;text-decoration:none;color:var(--text-100);transition:all 0.3s var(--ease)}
+        @media(max-height:750px){.store-btn{padding:12px 14px;gap:10px}}
         .store-btn:hover{background:var(--glass-4);border-color:var(--border-3);transform:translateY(-2px)}
-        .store-btn-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:white;border-radius:10px;flex-shrink:0}
-        .store-btn-icon svg{width:24px;height:24px;color:var(--void)}
+        .store-btn-icon{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:white;border-radius:8px;flex-shrink:0}
+        @media(max-height:750px){.store-btn-icon{width:36px;height:36px}}
+        .store-btn-icon svg{width:22px;height:22px;color:var(--void)}
+        @media(max-height:750px){.store-btn-icon svg{width:20px;height:20px}}
         .store-btn-text{flex:1}
-        .store-btn-label{font-size:10px;color:var(--text-35);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px}
-        .store-btn-name{font-size:15px;font-weight:600}
-        .store-btn-arrow{width:20px;height:20px;color:var(--text-35)}
+        .store-btn-label{font-size:9px;color:var(--text-35);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:1px}
+        .store-btn-name{font-size:14px;font-weight:600}
+        @media(max-height:750px){.store-btn-name{font-size:13px}}
+        .store-btn-arrow{width:18px;height:18px;color:var(--text-35)}
 
-        @media(max-width:400px){.skill-name{width:80px;font-size:10px}}
+        @media(max-width:400px){.skill-name{width:70px;font-size:9px}}
+        
+        @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+        @keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(-20px)}}
     </style>
 </head>
 <body>
@@ -261,7 +361,7 @@
         <div class="screen" id="gameScreen">
             <div class="game-header">
                 <div class="progress-wrap">
-                    <span class="progress-text"><span id="qNum">1</span>/8</span>
+                    <span class="progress-text"><span id="qNum">1</span>/<span id="totalQ">28</span></span>
                     <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
                 </div>
                 <div class="cat-pill">
@@ -329,12 +429,13 @@
                     <div class="pricing-cards">
                         <div class="plan-card glass-card">
                             <div class="plan-name">Starter</div>
-                            <div class="plan-tagline">Build your meeting confidence</div>
+                            <div class="plan-tagline">Build the habit</div>
                             <div class="plan-price"><span class="plan-amount">$12.99</span><span class="plan-period">/ month</span></div>
                             <ul class="plan-features">
-                                <li>Unlimited AI practice sessions</li>
-                                <li>Meeting scenario simulations</li>
-                                <li>Real-time feedback on delivery</li>
+                                <li>Essential Analytics</li>
+                                <li>15-min AI voice + unlimited text roleplay</li>
+                                <li>Basic feedback on clarity & structure</li>
+                                <li>3 avatars + daily goals</li>
                             </ul>
                             <button class="plan-btn plan-btn-secondary" onclick="selectPlan('Starter')">
                                 Start Free Trial
@@ -347,13 +448,13 @@
                                 Most Popular
                             </div>
                             <div class="plan-name">Pro</div>
-                            <div class="plan-tagline">Command every room you enter</div>
-                            <div class="plan-price"><span class="plan-amount">$24.99</span><span class="plan-period">/ month</span></div>
+                            <div class="plan-tagline">Your full communication gym</div>
+                            <div class="plan-price"><span class="plan-amount">$17.99</span><span class="plan-period">/ month</span></div>
                             <ul class="plan-features">
-                                <li>Everything in Starter</li>
-                                <li>Executive presence training</li>
-                                <li>Advanced influence tactics</li>
-                                <li>Personalized coaching insights</li>
+                                <li>Everything in Starter + 30-min AI voice & all scenarios</li>
+                                <li>Live mid-conversation coaching + deep analytics</li>
+                                <li>10 premium avatars + multilingual support</li>
+                                <li>Full history & reports</li>
                             </ul>
                             <button class="plan-btn plan-btn-primary" onclick="selectPlan('Pro')">
                                 Start Free Trial
@@ -382,7 +483,7 @@
         <div class="store-modal-title">Download Conversly</div>
         <div class="store-modal-plan" id="storeModalPlan">Pro Plan Selected</div>
         <div class="store-btns">
-            <a href="https://apps.apple.com/app/conversly" target="_blank" class="store-btn">
+            <a href="https://apps.apple.com/us/app/conversly-communication-gym/id6753739129" target="_blank" class="store-btn">
                 <div class="store-btn-icon">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                 </div>
@@ -392,7 +493,7 @@
                 </div>
                 <svg class="store-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-            <a href="https://play.google.com/store/apps/details?id=com.conversly" target="_blank" class="store-btn">
+            <a href="https://play.google.com/store/apps/details?id=com.conversly.app" target="_blank" class="store-btn">
                 <div class="store-btn-icon">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.67-1.5 1.5-1.5.4 0 .77.15 1.06.44L17.1 11.5c.59.54.59 1.46 0 2L5.56 22.56c-.29.29-.66.44-1.06.44-.83 0-1.5-.67-1.5-1.5zm14.1-8.5L5 2.5v19l12.1-9.5zM20 12l-3-2.5v5l3-2.5z"/></svg>
                 </div>
@@ -455,7 +556,8 @@ const scenarios = [
             { text: "\"I think this could be really valuable for the team. Can we discuss resources?\"", score: 55, tier: "mid", cat: "frame" },
             { text: "Present the idea and hope someone offers to help allocate resources", score: 25, tier: "low", cat: "frame" },
             { text: "Start working on it yourself and ask for help when you get stuck", score: 15, tier: "low", cat: "frame" }
-        ]
+        ],
+        dataInsight: { stat: "73%", text: "of resource requests that include specific ROI projections get approved, compared to just 31% of general requests." }
     },
     {
         cat: "SPEAKING UP",
@@ -486,7 +588,220 @@ const scenarios = [
             { text: "Immediately concede and suggest doing more research", score: 25, tier: "low", cat: "exec" },
             { text: "Get defensive and double down without new evidence", score: 15, tier: "low", cat: "exec" }
         ]
+    },
+    {
+        cat: "IDEA OWNERSHIP",
+        text: "Your team just completed a successful project. In the all-hands meeting, your manager presents it without mentioning your contributions. <b>What do you do?</b>",
+        answers: [
+            { text: "After the meeting, ask your manager: \"I'd love to present the technical details in the next update — can I take that section?\"", score: 100, tier: "high", cat: "own" },
+            { text: "Casually mention your role to colleagues who attended", score: 50, tier: "mid", cat: "own" },
+            { text: "Trust that your manager knows your contributions internally", score: 30, tier: "low", cat: "own" },
+            { text: "Let it go — the work speaks for itself", score: 15, tier: "low", cat: "own" }
+        ]
+    },
+    {
+        cat: "STRATEGIC FRAMING",
+        text: "You're pitching an idea to stakeholders who seem skeptical from the start. <b>How do you adjust?</b>",
+        answers: [
+            { text: "Acknowledge their concerns upfront: \"I know there are valid questions about X. Let me address those directly before continuing.\"", score: 100, tier: "high", cat: "frame" },
+            { text: "Push through your prepared pitch and address concerns at the end", score: 45, tier: "mid", cat: "frame" },
+            { text: "Ask if they'd prefer to reschedule when there's more buy-in", score: 30, tier: "low", cat: "frame" },
+            { text: "Speed through the presentation to minimize their objection time", score: 10, tier: "low", cat: "frame" }
+        ],
+        dataInsight: { stat: "2.4x", text: "Presenters who proactively address objections are 2.4x more likely to get stakeholder buy-in than those who wait for Q&A." }
+    },
+    {
+        cat: "SPEAKING UP",
+        text: "In a brainstorm, you have an unconventional idea that might sound risky. The room is playing it safe. <b>What do you do?</b>",
+        answers: [
+            { text: "\"Here's a different angle — it's unconventional, but hear me out...\" Then frame the upside clearly.", score: 100, tier: "high", cat: "speak" },
+            { text: "Test the idea with a trusted colleague after the meeting first", score: 55, tier: "mid", cat: "speak" },
+            { text: "Mention it vaguely and see if anyone picks up on it", score: 30, tier: "low", cat: "speak" },
+            { text: "Save it for a smaller, safer setting", score: 15, tier: "low", cat: "speak" }
+        ]
+    },
+    {
+        cat: "INTERRUPTION HANDLING",
+        text: "A colleague frequently talks over you in meetings. It's becoming a pattern. <b>How do you address it?</b>",
+        answers: [
+            { text: "In the moment: \"I'd like to finish my point.\" Later, privately: \"I've noticed this happening — can we be mindful of it?\"", score: 100, tier: "high", cat: "int" },
+            { text: "Start speaking louder to make it harder for them to interrupt", score: 40, tier: "mid", cat: "int" },
+            { text: "Mention it to your manager and ask them to address it", score: 35, tier: "low", cat: "int" },
+            { text: "Accept it as their communication style and work around it", score: 10, tier: "low", cat: "int" }
+        ]
+    },
+    {
+        cat: "EXECUTIVE PRESENCE",
+        text: "You made a mistake on a deliverable that was shared with leadership. <b>How do you handle it?</b>",
+        answers: [
+            { text: "Own it immediately: \"I caught an error in slide 4. Here's the corrected version and what I'm doing to prevent this going forward.\"", score: 100, tier: "high", cat: "exec" },
+            { text: "Quietly send a corrected version without drawing attention to the error", score: 50, tier: "mid", cat: "exec" },
+            { text: "Wait to see if anyone notices before addressing it", score: 25, tier: "low", cat: "exec" },
+            { text: "Hope it doesn't impact the overall message", score: 10, tier: "low", cat: "exec" }
+        ]
+    },
+    {
+        cat: "IDEA OWNERSHIP",
+        text: "During a networking event, someone asks about your recent accomplishments. <b>How do you respond?</b>",
+        answers: [
+            { text: "Share a specific win with clear impact: \"I led a project that reduced customer churn by 15% — happy to share more details.\"", score: 100, tier: "high", cat: "own" },
+            { text: "Mention your role and team broadly without specific accomplishments", score: 50, tier: "mid", cat: "own" },
+            { text: "Deflect and ask about their work instead", score: 30, tier: "low", cat: "own" },
+            { text: "Downplay your contributions to seem humble", score: 15, tier: "low", cat: "own" }
+        ]
+    },
+    {
+        cat: "STRATEGIC FRAMING",
+        text: "You're asked to present complex technical work to non-technical stakeholders. <b>How do you approach it?</b>",
+        answers: [
+            { text: "Lead with the business outcome, use analogies, and keep technical details in backup slides for Q&A", score: 100, tier: "high", cat: "frame" },
+            { text: "Simplify the technical language but keep the same structure", score: 55, tier: "mid", cat: "frame" },
+            { text: "Present the full technical detail — they should understand the complexity", score: 25, tier: "low", cat: "frame" },
+            { text: "Send a pre-read document and keep the meeting short", score: 20, tier: "low", cat: "frame" }
+        ],
+        dataInsight: { stat: "67%", text: "of executives say they lose interest when presenters lead with technical details instead of business impact." }
+    },
+    {
+        cat: "SPEAKING UP",
+        text: "You disagree with a direction the team is taking, but everyone else seems aligned. <b>What do you do?</b>",
+        answers: [
+            { text: "\"I want to flag a concern before we commit. Have we considered [alternative]? Here's why it might matter...\"", score: 100, tier: "high", cat: "speak" },
+            { text: "Raise it with your manager privately after the meeting", score: 55, tier: "mid", cat: "speak" },
+            { text: "Go along with the group but document your concern in notes", score: 30, tier: "low", cat: "speak" },
+            { text: "Stay silent — you might be missing context they have", score: 10, tier: "low", cat: "speak" }
+        ]
+    },
+    {
+        cat: "INTERRUPTION HANDLING",
+        text: "In a video call, you start speaking at the same time as someone else. <b>How do you handle the overlap?</b>",
+        answers: [
+            { text: "Quick acknowledgment: \"Go ahead, [name]\" — then after they finish, \"Adding to that...\" and make your point", score: 100, tier: "high", cat: "int" },
+            { text: "Immediately stop and let them go first every time", score: 45, tier: "mid", cat: "int" },
+            { text: "Keep talking — whoever is louder wins", score: 25, tier: "low", cat: "int" },
+            { text: "Wait for someone else to mediate who should speak", score: 15, tier: "low", cat: "int" }
+        ]
+    },
+    {
+        cat: "EXECUTIVE PRESENCE",
+        text: "You're in a high-stakes meeting and suddenly feel nervous. Your voice starts to shake slightly. <b>What do you do?</b>",
+        answers: [
+            { text: "Take a brief pause, a slow breath, and continue. Your composure matters more than perfection.", score: 100, tier: "high", cat: "exec" },
+            { text: "Speed up to get through the nervous section faster", score: 40, tier: "mid", cat: "exec" },
+            { text: "Apologize for being nervous and explain why", score: 25, tier: "low", cat: "exec" },
+            { text: "Cut your contribution short to minimize exposure", score: 10, tier: "low", cat: "exec" }
+        ]
+    },
+    {
+        cat: "IDEA OWNERSHIP",
+        text: "You solved a major problem independently, but your manager wants to present it as a \"team effort.\" <b>How do you respond?</b>",
+        answers: [
+            { text: "\"I'm glad it helped the team. For my development, could I present the methodology section to show my technical growth?\"", score: 100, tier: "high", cat: "own" },
+            { text: "Accept it but ask to be mentioned as the lead on the project", score: 55, tier: "mid", cat: "own" },
+            { text: "Trust that your manager will advocate for you in private", score: 30, tier: "low", cat: "own" },
+            { text: "Let it go — team credit is still good credit", score: 20, tier: "low", cat: "own" }
+        ]
+    },
+    {
+        cat: "STRATEGIC FRAMING",
+        text: "You need to deliver bad news to your team about a delayed project. <b>How do you frame the message?</b>",
+        answers: [
+            { text: "Be direct: \"We're delayed by two weeks. Here's why, what we're doing about it, and how this affects downstream work.\"", score: 100, tier: "high", cat: "frame" },
+            { text: "Lead with the solution before mentioning the delay", score: 55, tier: "mid", cat: "frame" },
+            { text: "Soften it heavily to avoid demoralizing the team", score: 30, tier: "low", cat: "frame" },
+            { text: "Wait until you have more answers before saying anything", score: 15, tier: "low", cat: "frame" }
+        ],
+        dataInsight: { stat: "89%", text: "of team members say they prefer direct communication about delays over softened messaging that lacks clarity." }
+    },
+    {
+        cat: "SPEAKING UP",
+        text: "A meeting has gone off-track and is running over time. No one is steering it back. <b>What do you do?</b>",
+        answers: [
+            { text: "\"I want to be respectful of everyone's time — should we table this discussion and refocus on the original agenda?\"", score: 100, tier: "high", cat: "speak" },
+            { text: "Start visibly checking your watch or calendar to signal time pressure", score: 40, tier: "mid", cat: "speak" },
+            { text: "Message the meeting host privately to intervene", score: 35, tier: "low", cat: "speak" },
+            { text: "Stay quiet and let it run over — it's not your place to redirect", score: 10, tier: "low", cat: "speak" }
+        ]
+    },
+    {
+        cat: "INTERRUPTION HANDLING",
+        text: "Someone keeps rephrasing your points and taking credit for them in real-time. <b>How do you respond?</b>",
+        answers: [
+            { text: "\"Yes, that's exactly what I was saying. To build on my original point...\" and continue owning the narrative.", score: 100, tier: "high", cat: "int" },
+            { text: "Call it out humorously: \"Looks like we're on the same wavelength — great minds!\"", score: 55, tier: "mid", cat: "int" },
+            { text: "Note it for later and address it privately with them", score: 35, tier: "low", cat: "int" },
+            { text: "Let it go — at least the idea is being heard", score: 15, tier: "low", cat: "int" }
+        ]
+    },
+    {
+        cat: "EXECUTIVE PRESENCE",
+        text: "You're asked to give an impromptu update in a meeting you weren't prepared for. <b>How do you handle it?</b>",
+        answers: [
+            { text: "Use a simple framework: \"Here's where we are, what's working, and what we're focused on next.\" Keep it tight.", score: 100, tier: "high", cat: "exec" },
+            { text: "Give a brief overview and offer to follow up with details later", score: 60, tier: "mid", cat: "exec" },
+            { text: "Apologize for not being prepared and wing it", score: 30, tier: "low", cat: "exec" },
+            { text: "Deflect to a colleague who might know more", score: 20, tier: "low", cat: "exec" }
+        ]
+    },
+    {
+        cat: "IDEA OWNERSHIP",
+        text: "You're writing your self-review and struggle to articulate your impact. <b>How do you approach it?</b>",
+        answers: [
+            { text: "Document specific metrics: \"I led X initiative, resulting in Y% improvement, which contributed to Z business outcome.\"", score: 100, tier: "high", cat: "own" },
+            { text: "List your responsibilities and mention team accomplishments", score: 50, tier: "mid", cat: "own" },
+            { text: "Keep it humble and let your manager fill in the gaps", score: 25, tier: "low", cat: "own" },
+            { text: "Copy from your job description with minor updates", score: 10, tier: "low", cat: "own" }
+        ]
+    },
+    {
+        cat: "STRATEGIC FRAMING",
+        text: "You want to propose working remotely more often, but your company values in-office presence. <b>How do you frame the request?</b>",
+        answers: [
+            { text: "\"I've noticed I'm most productive on deep work from home. Could we trial 2 remote days and measure output?\"", score: 100, tier: "high", cat: "frame" },
+            { text: "Ask casually if remote work is ever possible for your role", score: 50, tier: "mid", cat: "frame" },
+            { text: "Start working from home occasionally and see if anyone notices", score: 25, tier: "low", cat: "frame" },
+            { text: "Accept the in-office policy and don't bring it up", score: 10, tier: "low", cat: "frame" }
+        ],
+        dataInsight: { stat: "3.1x", text: "Requests framed as experiments with measurable outcomes are 3.1x more likely to be approved than open-ended asks." }
+    },
+    {
+        cat: "SPEAKING UP",
+        text: "You're in a meeting where leadership is making a decision that could negatively impact your team. <b>What do you do?</b>",
+        answers: [
+            { text: "\"I want to share how this might affect my team's capacity. Can I offer some context before we finalize?\"", score: 100, tier: "high", cat: "speak" },
+            { text: "Raise your concerns with your manager after and ask them to escalate", score: 55, tier: "mid", cat: "speak" },
+            { text: "Accept the decision and figure out how to adapt later", score: 30, tier: "low", cat: "speak" },
+            { text: "Stay quiet — leadership probably knows something you don't", score: 10, tier: "low", cat: "speak" }
+        ]
+    },
+    {
+        cat: "INTERRUPTION HANDLING",
+        text: "You're facilitating a meeting and one person keeps dominating the discussion. <b>How do you manage it?</b>",
+        answers: [
+            { text: "\"Great input, [name]. I want to make sure we hear from everyone — [other name], what's your take?\"", score: 100, tier: "high", cat: "int" },
+            { text: "Let them finish, then ask if anyone else has thoughts", score: 50, tier: "mid", cat: "int" },
+            { text: "Send a private chat asking them to let others speak", score: 35, tier: "low", cat: "int" },
+            { text: "Let them dominate — they probably have the most expertise", score: 10, tier: "low", cat: "int" }
+        ]
+    },
+    {
+        cat: "EXECUTIVE PRESENCE",
+        text: "After a presentation, someone asks a confrontational question designed to undermine your work. <b>How do you respond?</b>",
+        answers: [
+            { text: "Stay calm: \"That's a fair challenge. Here's how I'd address that concern...\" and redirect to data or logic.", score: 100, tier: "high", cat: "exec" },
+            { text: "Acknowledge their point and offer to discuss offline", score: 55, tier: "mid", cat: "exec" },
+            { text: "Get visibly defensive and push back on their premise", score: 20, tier: "low", cat: "exec" },
+            { text: "Concede immediately to avoid conflict", score: 15, tier: "low", cat: "exec" }
+        ]
     }
+];
+
+const dataInsights = [
+    { stat: "73%", text: "of resource requests that include specific ROI projections get approved, compared to just 31% of general requests." },
+    { stat: "2.4x", text: "Presenters who proactively address objections are 2.4x more likely to get stakeholder buy-in than those who wait for Q&A." },
+    { stat: "67%", text: "of executives say they lose interest when presenters lead with technical details instead of business impact." },
+    { stat: "89%", text: "of team members say they prefer direct communication about delays over softened messaging that lacks clarity." },
+    { stat: "3.1x", text: "Requests framed as experiments with measurable outcomes are 3.1x more likely to be approved than open-ended asks." },
+    { stat: "82%", text: "of high performers regularly speak up in meetings, compared to just 37% of average performers." }
 ];
 
 const tiers = [
@@ -532,15 +847,37 @@ function loadQ() {
     
     locked = false;
     const s = scenarios[q];
+    const totalQuestions = scenarios.length;
     
     $('qNum').textContent = q + 1;
-    $('progFill').style.width = `${((q + 1) / 8) * 100}%`;
+    $('totalQ').textContent = totalQuestions;
+    $('progFill').style.width = `${((q + 1) / totalQuestions) * 100}%`;
     $('catLabel').textContent = s.cat;
     $('scenarioText').innerHTML = s.text;
     $('runningLabel').textContent = totalScore + ' points earned';
     
     const wrap = $('answersWrap');
     wrap.innerHTML = '';
+    
+    // Show data insight for every 5th question (questions 5, 10, 15, 20, 25)
+    if ((q + 1) % 5 === 0) {
+        const insightIndex = Math.floor(q / 5);
+        const insight = dataInsights[insightIndex % dataInsights.length];
+        const insightDiv = document.createElement('div');
+        insightDiv.className = 'data-insight';
+        insightDiv.innerHTML = `
+            <div class="data-insight-header">
+                <div class="data-insight-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                </div>
+                <span class="data-insight-title">Research Insight</span>
+            </div>
+            <div class="data-insight-stat">${insight.stat}</div>
+            <div class="data-insight-text">${insight.text}</div>
+        `;
+        wrap.appendChild(insightDiv);
+    }
+    
     const letters = ['A', 'B', 'C', 'D'];
     const shuffled = [...s.answers].sort(() => Math.random() - 0.5);
     
@@ -559,10 +896,57 @@ function loadQ() {
         wrap.appendChild(btn);
     });
     
+    // Add custom input option
+    const customWrap = document.createElement('div');
+    customWrap.className = 'custom-input-wrap';
+    customWrap.innerHTML = `
+        <div class="custom-input-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Or share your own approach
+        </div>
+        <textarea class="custom-input" id="customAnswer" placeholder="Type your response here..." rows="2"></textarea>
+        <button class="btn btn-primary custom-submit" onclick="submitCustomAnswer()">
+            Submit My Approach
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+    `;
+    wrap.appendChild(customWrap);
+    
     wrap.onclick = e => {
         const btn = e.target.closest('.answer');
         if (btn && !btn.classList.contains('locked') && btn._data) pick(btn, btn._data);
     };
+}
+
+function submitCustomAnswer() {
+    if (locked) return;
+    const customText = $('customAnswer').value.trim();
+    if (!customText) return;
+    
+    locked = true;
+    
+    // Give moderate score for custom answers
+    const s = scenarios[q];
+    const customScore = 55;
+    const customCat = s.answers[0].cat;
+    
+    totalScore += customScore;
+    $('topNum').textContent = totalScore;
+    $('runningLabel').textContent = totalScore + ' points earned';
+    catScores[customCat].push(customScore);
+    
+    document.querySelectorAll('.answer').forEach(a => {
+        a.classList.add('locked', 'reveal');
+    });
+    
+    $('customAnswer').disabled = true;
+    document.querySelector('.custom-submit').disabled = true;
+    document.querySelector('.custom-submit').textContent = '+55 pts - Custom response recorded';
+    
+    setTimeout(() => {
+        q++;
+        loadQ();
+    }, 1200);
 }
 
 function pick(btn, ans) {
@@ -573,6 +957,12 @@ function pick(btn, ans) {
     document.querySelectorAll('.answer').forEach(a => {
         a.classList.add('locked', 'reveal');
     });
+    
+    // Disable custom input when an answer is selected
+    const customInput = $('customAnswer');
+    if (customInput) customInput.disabled = true;
+    const customBtn = document.querySelector('.custom-submit');
+    if (customBtn) customBtn.disabled = true;
     
     totalScore += ans.score;
     $('topNum').textContent = totalScore;
@@ -663,12 +1053,61 @@ function animNum(el, start, end, dur) {
 
 function shareResults() {
     const r = window.gameResults;
-    const text = `My Meeting Influence Score: ${r.score}/100 (${r.tier})\n\nHow much influence do YOU command in meetings?\n\nTake the 2-min assessment: ${location.href}`;
+    const shareUrl = window.location.href.split('?')[0];
+    const shareTitle = 'My Meeting Influence Score';
+    const shareText = `I scored ${r.score}/100 (${r.tier}) on the Meeting Influence Assessment!\n\nHow much influence do YOU command in meetings?\n\nTake the free 2-min assessment:`;
+    
     if (navigator.share) {
-        navigator.share({ title: 'My Meeting Influence Score', text, url: location.href }).catch(() => {});
+        navigator.share({ 
+            title: shareTitle, 
+            text: shareText,
+            url: shareUrl 
+        }).catch((err) => {
+            // If share fails, fall back to clipboard
+            copyToClipboard(shareText + ' ' + shareUrl);
+        });
     } else {
-        navigator.clipboard.writeText(text).then(() => alert('Copied!')).catch(() => alert(text));
+        copyToClipboard(shareText + ' ' + shareUrl);
     }
+}
+
+function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            showCopyToast();
+        }).catch(() => {
+            fallbackCopy(text);
+        });
+    } else {
+        fallbackCopy(text);
+    }
+}
+
+function fallbackCopy(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+        document.execCommand('copy');
+        showCopyToast();
+    } catch (e) {
+        alert('Share this:\n\n' + text);
+    }
+    document.body.removeChild(textarea);
+}
+
+function showCopyToast() {
+    const toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--violet-500),var(--cyan-500));color:white;padding:12px 24px;border-radius:12px;font-size:13px;font-weight:600;z-index:1000;animation:toastIn 0.3s ease-out;box-shadow:0 10px 30px -10px rgba(139,92,246,0.5);';
+    toast.innerHTML = '<span style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Copied to clipboard!</span>';
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = 'toastOut 0.3s ease-in forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
 }
 
 function selectPlan(planName) {
